@@ -2,6 +2,8 @@
 
 #include <string>
 #include <map>
+#include <iostream>
+#include <limits>
 
 class Menu 
 {
@@ -13,7 +15,11 @@ public:
         SET_MAX_TEMP
     };
 
-    static void printMenu();
+    Menu(float & input, float & upperLimit, float & lowerLimit);
+
+    void printMenu();
+
+    void run();
 
 private:
     inline static std::map<Menu::Option, std::string> MENU_ITEMS = {
@@ -21,4 +27,11 @@ private:
         { SET_MIN_TEMP, "Set minimum temperature" },
         { SET_MAX_TEMP, "Set maximum temperature" }
     };
+
+    float & m_input;
+    float & m_upperLimit;
+    float & m_lowerLimit;
+
+    template<typename T>
+    bool readInput(T & input);
 };

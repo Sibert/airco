@@ -27,34 +27,16 @@ int main(int, char**)
 
 void inputThread()
 {
+    Menu menu(currTemp, maxTemp, minTemp);
+
     while(true)
     {
         cout << "Current temperature: " << currTemp << "°C" << endl;
         cout << "Minimum temperature: " << minTemp << "°C" << endl;
         cout << "Maximum temperature: " << maxTemp << "°C" << endl;
-        Menu::printMenu();
-        int input;
-        cin >> input;
-
-        switch((Menu::Option)input)
-        {
-            case Menu::Option::SET_CURRENT_TEMP:
-                cout << "Enter new current temperature: ";
-                cin >> currTemp;
-                break;
-            case Menu::Option::SET_MIN_TEMP:
-                cout << "Enter new min temperature: ";
-                cin >> minTemp;
-                break;
-            case Menu::Option::SET_MAX_TEMP:
-                cout << "Enter new min temperature: ";
-                cin >> minTemp;
-                break;
-            default:
-                cout << "Invalid option picked" << endl;
-                cin.clear();
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        }
+        
+        menu.printMenu();
+        menu.run();
 
         this_thread::sleep_for(100ms);
     }
