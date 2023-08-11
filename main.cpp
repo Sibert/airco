@@ -1,13 +1,25 @@
 #include <iostream>
 #include <thread>
 #include <Menu.hpp>
-#include <TemperatureController.hpp>
+#include <map>
+#include <State.hpp>
+#include <TemperatureControllerContextImpl.hpp>
+#include <TemperatureInputImpl.hpp>
+#include <OutputImpl.hpp>
+#include <CoolingState.hpp>
+#include <HeatingState.hpp>
+#include <IdleState.hpp>
 
 using namespace std;
 
-float currTemp = 20.0;
-float minTemp = 18.0;
-float maxTemp = 25.0;
+TemperatureInputImpl * minTemp = nullptr;
+TemperatureInputImpl * maxTemp = nullptr;
+TemperatureInputImpl * currentTemp = nullptr;
+
+OutputImpl * coolingOutput = nullptr;
+OutputImpl * heatingOutput = nullptr;
+
+map<State::StateEnum, State*> STATE_MAP;
 
 void inputThread();
 
@@ -15,25 +27,56 @@ int main(int, char**)
 {
     std::thread inputTask(inputThread);
 
-    TemperatureController controller(currTemp, maxTemp, minTemp);
+    minTemp = new TemperatureInputImpl(20.0);
+    maxTemp = new TemperatureInputImpl(30.0);
+    currentTemp = new TemperatureInputImpl(25.0);
+
+    coolingOutput = new OutputImpl();
+    heatingOutput = new OutputImpl();
+
+    TemperatureControllerContextImpl ctx(minTemp, maxTemp, currentTemp, coolingOutput, heatingOutput);
+
+    STATE_MAP = {
+        { State::IDLE, new IdleState(&ctx) },
+        { State::COOLING, new CoolingState(&ctx) },
+        { State::HEATING, new HeatingState(&ctx) }
+    };
+
+    State::StateEnum currentState = State::IDLE;
 
     while(true)
     {
-        controller.run();
+        ctx.refreshContext();
+
+        State::StateEnum nextState = STATE_MAP[currentState]->process();
+
+        if(nextState != currentState)
+        {
+            STATE_MAP[currentState]->onExit();
+            STATE_MAP[nextState]->onEntry();
+            currentState = nextState;
+        }
 
         this_thread::sleep_for(100ms);
     }
+
+    delete minTemp;
+    delete maxTemp;
+    delete currentTemp;
+
+    delete coolingOutput;
+    delete heatingOutput;
 }
 
 void inputThread()
 {
-    Menu menu(currTemp, maxTemp, minTemp);
+    Menu menu(minTemp, maxTemp, currentTemp);
 
     while(true)
     {
-        cout << "Current temperature: " << currTemp << "°C" << endl;
-        cout << "Minimum temperature: " << minTemp << "°C" << endl;
-        cout << "Maximum temperature: " << maxTemp << "°C" << endl;
+        cout << "Current temperature: " << currentTemp->read() << "°C" << endl;
+        cout << "Minimum temperature: " << minTemp->read() << "°C" << endl;
+        cout << "Maximum temperature: " << maxTemp->read() << "°C" << endl;
         
         menu.printMenu();
         menu.run();

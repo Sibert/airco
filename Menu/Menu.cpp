@@ -1,7 +1,10 @@
 #include <Menu.hpp>
 #include <iostream>
 
-Menu::Menu(float & input, float & upperLimit, float & lowerLimit) : m_input(input), m_upperLimit(upperLimit), m_lowerLimit(lowerLimit)
+Menu::Menu(TemperatureInputImpl * minInput, TemperatureInputImpl * maxInput, TemperatureInputImpl * currInput) : 
+    m_pLowerLimit(minInput),
+    m_pUpperLimit(maxInput),
+    m_pInput(currInput)
 {
 
 }
@@ -34,7 +37,7 @@ void Menu::run()
 
             if (readInput(inputValue))
             {
-                m_input = inputValue;    
+                m_pInput->setValue(inputValue);    
             }
             
             break;
@@ -43,7 +46,7 @@ void Menu::run()
 
             if (readInput(inputValue))
             {
-                m_lowerLimit = inputValue;    
+                m_pLowerLimit->setValue(inputValue);    
             }
 
             break;
@@ -52,7 +55,7 @@ void Menu::run()
             
             if (readInput(inputValue))
             {
-                m_upperLimit = inputValue;    
+                m_pUpperLimit->setValue(inputValue);    
             }
 
             break;
