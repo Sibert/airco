@@ -2,6 +2,7 @@
 
 HeatingState::HeatingState(TemperatureControllerContext *ctx) : State(State::HEATING, ctx)
 {
+    assert(ctx != nullptr);
 }
 
 void HeatingState::onEntry()

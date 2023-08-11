@@ -1,5 +1,6 @@
 #pragma once
 #include <TemperatureControllerContext.hpp>
+#include <assert.h>
 
 class State
 {
@@ -7,7 +8,8 @@ public:
     enum StateEnum {
         IDLE,
         COOLING,
-        HEATING
+        HEATING,
+        NUM_OF_STATES
     };
 
     virtual ~State() = default;

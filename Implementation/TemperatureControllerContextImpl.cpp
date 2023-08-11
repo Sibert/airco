@@ -10,7 +10,13 @@ TemperatureControllerContextImpl::TemperatureControllerContextImpl(
     m_pOutHeating(outHeating)
 
 {
-    
+    assert(minTemp != nullptr);
+    assert(maxTemp != nullptr);
+    assert(currentTemp != nullptr);
+
+    assert(outCooling != nullptr);
+    assert(outHeating != nullptr);
+
 }
 
 void TemperatureControllerContextImpl::refreshContext()

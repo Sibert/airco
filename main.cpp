@@ -9,6 +9,7 @@
 #include <CoolingState.hpp>
 #include <HeatingState.hpp>
 #include <IdleState.hpp>
+#include <assert.h>
 
 using namespace std;
 
@@ -41,6 +42,12 @@ int main(int, char**)
         { State::COOLING, new CoolingState(&ctx) },
         { State::HEATING, new HeatingState(&ctx) }
     };
+
+    // Check if an instance of each state is present
+    for (int i = 0; i < State::NUM_OF_STATES; i++)
+    {
+        assert(STATE_MAP.count((State::StateEnum)i) == 1);
+    }
 
     State::StateEnum currentState = State::IDLE;
 

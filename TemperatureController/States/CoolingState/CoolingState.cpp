@@ -2,6 +2,7 @@
 
 CoolingState::CoolingState(TemperatureControllerContext *ctx) : State(State::COOLING, ctx)
 {
+    assert(ctx != nullptr);
 }
 
 void CoolingState::onEntry()

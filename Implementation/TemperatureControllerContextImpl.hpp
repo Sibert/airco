@@ -4,6 +4,7 @@
 #include <TemperatureInput.hpp>
 #include <Output.hpp>
 #include <iostream>
+#include <assert.h>
 
 class TemperatureControllerContextImpl : public TemperatureControllerContext
 {

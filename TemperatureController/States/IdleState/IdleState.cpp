@@ -2,7 +2,7 @@
 
 IdleState::IdleState(TemperatureControllerContext * ctx) : State(State::IDLE, ctx)
 {
-
+    assert(ctx != nullptr);
 }
 
 void IdleState::onEntry()

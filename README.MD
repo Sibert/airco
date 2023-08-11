@@ -11,13 +11,14 @@ When temp is too low, start heating, when temp is too high start cooling.
 4. code is available in a git repo
 
 # Rationale
-## Input
-The input is a seperate thread. Much like a real embedded system, inputs shouldn't block execution of the code but usin 'cin' does, hence the choice to put it in a thread
+## State machine
+A state machine was chosen for this implementation. In this simple example somewhat overkill since the logic in each state is nearly identical, but it allows for very simple expansion (e.g. a cooldown state before switching between heating and cooling, error detection...).
 
-## Menu
-I made the menu a seperate class, in this example this might seem overkill. This has been done because I like to always write easily expandable code. In this case, the menu class could be expanded to contain submenus and handle input validation
+The state machine pattern also allows for very quick and simple unittesting, since the states don't use any platform dependent code. Each state depends on the context class to retrieve data (input values) and perform actions (start/stop heating/cooling). By creating an abstract context class, it's easy to use different implementations. In this case there is an implementation for the unittests and an implementation to make it run on a regular computer. Creating an implementation that runs on a microcontroller becomes trivial.
 
-## TemperatureController
-The temperature controller itself contains references to its three inputs, making it simple to just 'run' it.
-It prints it's state whenever it changes as an output and also returns it's state on the run function.
-The run function could be easily expanded to implement a PID loop or functions to check if the current temperature changes within a reasonable timeframe
+## TemperatureInput
+The temperatureInput class has been made abstract, as to allow portability to different platforms. An implementation can be made to use the console, but an implementation that uses an ADC on a MCU is possible as well. The output class is similar to this
+
+## Unittesting
+The unittests are focussed on the states. By testing both the 'entry' and 'exit' functions of each state, the physical behavior of the FSM is tested. The transition logic is tested as well, by performing tests on the 'process' function of each state.
+
