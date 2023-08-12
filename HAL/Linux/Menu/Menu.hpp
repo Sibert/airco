@@ -4,7 +4,7 @@
 #include <map>
 #include <iostream>
 #include <limits>
-#include <TemperatureInputImpl.hpp>
+#include <TemperatureInputImpl/TemperatureInputImpl.hpp>
 
 class Menu 
 {
@@ -16,7 +16,7 @@ public:
         SET_MAX_TEMP
     };
 
-    Menu(TemperatureInputImpl * minInput, TemperatureInputImpl * maxInput, TemperatureInputImpl * currInput);
+    Menu(TemperatureInputLinuxImpl * minInput, TemperatureInputLinuxImpl * maxInput, TemperatureInputLinuxImpl * currInput);
 
     void printMenu();
 
@@ -29,9 +29,9 @@ private:
         { SET_MAX_TEMP, "Set maximum temperature" }
     };
 
-    TemperatureInputImpl * m_pLowerLimit;
-    TemperatureInputImpl * m_pUpperLimit;
-    TemperatureInputImpl * m_pInput;
+    TemperatureInputLinuxImpl * m_pLowerLimit;
+    TemperatureInputLinuxImpl * m_pUpperLimit;
+    TemperatureInputLinuxImpl * m_pInput;
 
     template<typename T>
     bool readInput(T & input);

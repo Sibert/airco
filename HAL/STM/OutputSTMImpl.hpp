@@ -2,13 +2,11 @@
 
 #include <Output.hpp>
 
-class OutputImpl : public Output
+class OutputSTMImpl : public Output
 {
 public:
-    OutputImpl(bool initialValue = false);
-
+    OutputSTMImpl(int pin);
+    
     void write(bool value) override;
     bool read() override;
-private:
-    bool m_value = false;
 };

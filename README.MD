@@ -11,14 +11,11 @@ When temp is too low, start heating, when temp is too high start cooling.
 4. code is available in a git repo
 
 # Rationale
-## State machine
-A state machine was chosen for this implementation. In this simple example somewhat overkill since the logic in each state is nearly identical, but it allows for very simple expansion (e.g. a cooldown state before switching between heating and cooling, error detection...).
+## Platform independence
+The code was written to be as portable as possible. The logic of the code is fully platform independent.
+By making use of abstract hardware classes (Output and TemperatureInput), the implementations can be changed at compile time. Adding new implementations should in theory be quick and easy. The instances of these hardware classes are created by an implementation of the HALInterface, which is also has an implementation depending on the platform.
 
-The state machine pattern also allows for very quick and simple unittesting, since the states don't use any platform dependent code. Each state depends on the context class to retrieve data (input values) and perform actions (start/stop heating/cooling). By creating an abstract context class, it's easy to use different implementations. In this case there is an implementation for the unittests and an implementation to make it run on a regular computer. Creating an implementation that runs on a microcontroller becomes trivial.
-
-## TemperatureInput
-The temperatureInput class has been made abstract, as to allow portability to different platforms. An implementation can be made to use the console, but an implementation that uses an ADC on a MCU is possible as well. The output class is similar to this
-
-## Unittesting
-The unittests are focussed on the states. By testing both the 'entry' and 'exit' functions of each state, the physical behavior of the FSM is tested. The transition logic is tested as well, by performing tests on the 'process' function of each state.
+## Testing
+As the hardware classes are abstact, it's a small feat to create mock implementations of these classes.
+This makes the testing easy by mocking the functions of these classes. This in turns allow for a test to expect certain calls or return specific values on mocked functions
 

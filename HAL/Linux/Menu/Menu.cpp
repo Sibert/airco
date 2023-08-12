@@ -1,7 +1,7 @@
 #include <Menu.hpp>
 #include <iostream>
 
-Menu::Menu(TemperatureInputImpl * minInput, TemperatureInputImpl * maxInput, TemperatureInputImpl * currInput) : 
+Menu::Menu(TemperatureInputLinuxImpl * minInput, TemperatureInputLinuxImpl * maxInput, TemperatureInputLinuxImpl * currInput) : 
     m_pLowerLimit(minInput),
     m_pUpperLimit(maxInput),
     m_pInput(currInput)

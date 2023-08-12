@@ -7,29 +7,18 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-enable_testing()
-
 add_executable(TemperatureControllerTest 
-  IdleStateTest.cpp 
-  CoolingStateTest.cpp
-  HeatingStateTest.cpp
-  ../TemperatureController/Context/TemperatureControllerContext.cpp 
-  ../TemperatureController/States/State.cpp
-  ../TemperatureController/States/IdleState/IdleState.cpp
-  ../TemperatureController/States/CoolingState/CoolingState.cpp
-  ../TemperatureController/States/HeatingState/HeatingState.cpp
-  )
+  TemperatureControllerTest.cpp
+  ../TemperatureController/TemperatureController.cpp
+  ../Interfaces/TemperatureInput.hpp
+  ../Interfaces/Output.hpp
+)
 
 include_directories(TemperatureControllerTest PUBLIC
   .
-  ../TemperatureController/Context 
-  ../TemperatureController/States 
-  ../TemperatureController/States/IdleState 
-  ../TemperatureController/States/CoolingState
-  ../TemperatureController/States/HeatingState
-  ../Interfaces 
-  ../Mocks
-  )
+  ../TemperatureController
+  ../Interfaces
+)
 
 target_link_libraries(TemperatureControllerTest GTest::gtest_main gmock_main)
 
